@@ -1,0 +1,4 @@
+*.pickle
+*.pyc
+__pycache__
+out*
