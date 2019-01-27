@@ -1,5 +1,5 @@
-import glob
 import os
+from glob import glob
 
 import numpy as np
 import torch
@@ -32,10 +32,12 @@ if args.cuda >= 0:
     os.environ['CUDA_VISIBLE_DEVICES'] = str(args.cuda)
 args.device = torch.device('cpu' if args.cuda < 0 else 'cuda:0')
 
+args.out_filename = None
 
-def get_model_args_features():
-    model_args = '{model}_{lattice}_{boundary}_L{L}_beta{beta:g}'
-    model_args = model_args.format(**vars(args))
+
+def get_ham_args_features():
+    ham_args = '{ham}_{lattice}_{boundary}_L{L}_beta{beta:g}'
+    ham_args = ham_args.format(**vars(args))
 
     if args.net == 'made':
         features = 'nd{net_depth}_nw{net_width}_made'
@@ -66,14 +68,14 @@ def get_model_args_features():
 
     features = features.format(**vars(args))
 
-    return model_args, features
+    return ham_args, features
 
 
 def init_out_filename():
     if not args.out_dir:
         return
-    model_args, features = get_model_args_features()
-    template = '{args.out_dir}/{model_args}/{features}/out{args.out_infix}'
+    ham_args, features = get_ham_args_features()
+    template = '{args.out_dir}/{ham_args}/{features}/out{args.out_infix}'
     args.out_filename = template.format(**{**globals(), **locals()})
 
 
@@ -111,9 +113,7 @@ def my_log(s):
     if args.out_filename:
         with open(args.out_filename + '.log', 'a', newline='\n') as f:
             f.write(s + u'\n')
-        if not args.no_stdout:
-            print(s)
-    else:
+    if not args.no_stdout:
         print(s)
 
 
@@ -121,16 +121,14 @@ def my_err(s):
     if args.out_filename:
         with open(args.out_filename + '.err', 'a', newline='\n') as f:
             f.write(s + u'\n')
-        if not args.no_stdout:
-            print(s)
-    else:
+    if not args.no_stdout:
         print(s)
 
 
-def print_args():
+def print_args(print_fn=my_log):
     for k, v in args._get_kwargs():
-        my_log('{} = {}'.format(k, v))
-    my_log('')
+        print_fn('{} = {}'.format(k, v))
+    print_fn('')
 
 
 def parse_checkpoint_name(filename):
@@ -143,7 +141,7 @@ def parse_checkpoint_name(filename):
 def get_last_checkpoint_step():
     if not (args.out_filename and args.save_step):
         return -1
-    filename_list = glob.glob('{}_save/*.state'.format(args.out_filename))
+    filename_list = glob('{}_save/*.state'.format(args.out_filename))
     if not filename_list:
         return -1
     step = max([parse_checkpoint_name(x) for x in filename_list])
@@ -153,7 +151,7 @@ def get_last_checkpoint_step():
 def clear_checkpoint():
     if not (args.out_filename and args.save_step):
         return
-    filename_list = glob.glob('{}_save/*.state'.format(args.out_filename))
+    filename_list = glob('{}_save/*.state'.format(args.out_filename))
     for filename in filename_list:
         os.remove(filename)
 

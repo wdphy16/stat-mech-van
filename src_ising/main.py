@@ -108,7 +108,7 @@ def main():
         # 0.998**9000 ~ 1e-8
         beta = args.beta * (1 - args.beta_anneal**step)
         with torch.no_grad():
-            energy = ising.energy(sample, args.model, args.lattice,
+            energy = ising.energy(sample, args.ham, args.lattice,
                                   args.boundary)
             loss = log_prob + beta * energy
         assert not energy.requires_grad

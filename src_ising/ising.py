@@ -1,7 +1,7 @@
 # 2D classical Ising model
 
 
-def energy(sample, model, lattice, boundary):
+def energy(sample, ham, lattice, boundary):
     term = sample[:, :, 1:, :] * sample[:, :, :-1, :]
     term = term.sum(dim=(1, 2, 3))
     output = term
@@ -31,7 +31,7 @@ def energy(sample, model, lattice, boundary):
             term = term.sum(dim=1)
             output += term
 
-    if model == 'fm':
+    if ham == 'fm':
         output *= -1
 
     return output

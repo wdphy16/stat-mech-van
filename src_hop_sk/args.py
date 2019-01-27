@@ -4,7 +4,7 @@ parser = argparse.ArgumentParser()
 
 group = parser.add_argument_group('physics parameters')
 group.add_argument(
-    '--model',
+    '--ham',
     type=str,
     default='sk',
     choices=['hop', 'sk'],
@@ -53,7 +53,7 @@ group.add_argument(
 group.add_argument(
     '--beta_anneal_to', type=float, default=1.5, help='final value of beta')
 group.add_argument(
-    '--beta_inc', type=float, default=0.2, help='increment of beta')
+    '--beta_inc', type=float, default=0.1, help='increment of beta')
 group.add_argument(
     '--clip_grad',
     type=float,
@@ -76,7 +76,7 @@ group.add_argument(
     '--save_step',
     type=int,
     default=100,
-    help='number of steps to save model, 0 for disabled')
+    help='number of steps to save network weights, 0 for disabled')
 group.add_argument(
     '--visual_step',
     type=int,

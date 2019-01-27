@@ -27,13 +27,13 @@ def main():
     init_out_dir()
     print_args()
 
-    if args.model == 'hop':
-        model = HopfieldModel(args.n, args.beta, args.device, seed=args.seed)
-    elif args.model == 'sk':
-        model = SKModel(args.n, args.beta, args.device, seed=args.seed)
+    if args.ham == 'hop':
+        ham = HopfieldModel(args.n, args.beta, args.device, seed=args.seed)
+    elif args.ham == 'sk':
+        ham = SKModel(args.n, args.beta, args.device, seed=args.seed)
     else:
-        raise ValueError('Unknown model: {}'.format(args.model))
-    model.J.requires_grad = False
+        raise ValueError('Unknown ham: {}'.format(args.ham))
+    ham.J.requires_grad = False
 
     net = MADE(**vars(args))
     net.to(args.device)
@@ -82,7 +82,7 @@ def main():
 
             log_prob = net.log_prob(sample)
             with torch.no_grad():
-                energy = model.energy(sample)
+                energy = ham.energy(sample)
                 loss = log_prob + beta * energy
             assert not energy.requires_grad
             assert not loss.requires_grad
@@ -146,7 +146,7 @@ def main():
                 entropy_mean.item(),
             ))
 
-        if args.model == 'hop':
+        if args.ham == 'hop':
             ensure_dir(args.out_filename + '_sample/')
             np.savetxt(
                 '{}_sample/sample{:.2f}.txt'.format(args.out_filename, beta),

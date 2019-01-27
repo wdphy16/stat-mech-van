@@ -4,7 +4,7 @@ parser = argparse.ArgumentParser()
 
 group = parser.add_argument_group('physics parameters')
 group.add_argument(
-    '--model',
+    '--ham',
     type=str,
     default='afm',
     choices=['afm', 'fm'],
@@ -107,7 +107,7 @@ group.add_argument(
     '--save_step',
     type=int,
     default=100,
-    help='number of steps to save model, 0 for disabled')
+    help='number of steps to save network weights, 0 for disabled')
 group.add_argument(
     '--visual_step',
     type=int,

@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 #
-# Visualize filters in the model
+# Visualize filters in the network
 
 import time
 from math import sqrt
@@ -12,10 +12,10 @@ from torch import nn
 from args import args
 from made import MADE
 from pixelcnn import PixelCNN
-from utils import ensure_dir, get_model_args_features
+from utils import ensure_dir, get_ham_args_features
 
 # Set args here or through CLI to match the state
-args.model = 'afm'
+args.ham = 'afm'
 args.lattice = 'tri'
 args.boundary = 'periodic'
 args.L = 4
@@ -33,13 +33,13 @@ args.print_step = 100
 args.visual_step = 1000
 state_dir = 'out'
 
-model_args, features = get_model_args_features()
-state_filename = '{state_dir}/{model_args}/{features}/out{args.out_infix}_save/10000.state'.format(
+ham_args, features = get_ham_args_features()
+state_filename = '{state_dir}/{ham_args}/{features}/out{args.out_infix}_save/10000.state'.format(
     **locals())
 
 target_layer = 1
 num_channel = 1
-out_dir = '../support/fig/filters/{model_args}/{features}/layer{target_layer}'.format(
+out_dir = '../support/fig/filters/{ham_args}/{features}/layer{target_layer}'.format(
     **locals())
 
 if __name__ == '__main__':
