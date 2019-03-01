@@ -1,5 +1,5 @@
 # Solving Statistical Mechanics using Variational Autoregressive Networks
-Paper link: https://arxiv.org/abs/1809.10606
+Paper link: [arXiv:1809.10606](https://arxiv.org/abs/1809.10606) | [Phys. Rev. Lett. 122, 080602 (2019)](https://journals.aps.org/prl/abstract/10.1103/PhysRevLett.122.080602)
 
 The code requires Python >= 3.6 and PyTorch >= 1.0. If you have configured your PyTorch installation with a recent Nvidia GPU card, you can enjoy enormously acceleration (> 10x).
 
