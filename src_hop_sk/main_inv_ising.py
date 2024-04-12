@@ -67,7 +67,6 @@ def main():
     my_log('{}\n'.format(net))
 
     params = list(net.parameters())
-    params = [sk.J]
     params = list(filter(lambda p: p.requires_grad, params))
     nparams = int(sum([np.prod(p.shape) for p in params]))
     my_log('Total number of trainable parameters: {}'.format(nparams))
